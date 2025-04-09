@@ -45,7 +45,6 @@ export const CreativeTemplate = ({
     projects = [],
   } = resumeData;
 
-  // Styles for ensuring colors print correctly in PDF
   const pdfColorStyles = {
     WebkitPrintColorAdjust: 'exact',
     printColorAdjust: 'exact',
@@ -348,8 +347,8 @@ export const CreativeTemplate = ({
                     <Box sx={{ mb: 1 }}>
                       <Typography
                         variant="h6"
-                        sx={{ 
-                          fontWeight: 600, 
+                        sx={{
+                          fontWeight: 600,
                           color: colorScheme.secondary,
                           ...pdfColorStyles
                         }}

@@ -6,7 +6,6 @@ import {
   Grid,
   Link,
   IconButton,
-  Avatar,
   Chip,
 } from "@mui/material";
 import {
@@ -24,7 +23,6 @@ export const ModernTemplate = ({
   resumeData,
   formatDate,
   colorScheme,
-  fontFamily,
   isSectionEmpty,
   toggleStarSection,
   starredSections,
@@ -37,7 +35,6 @@ export const ModernTemplate = ({
     projects = [],
   } = resumeData;
 
-  // Styles for ensuring colors print correctly in PDF
   const pdfColorStyles = {
     WebkitPrintColorAdjust: 'exact',
     printColorAdjust: 'exact',
@@ -58,7 +55,6 @@ export const ModernTemplate = ({
         ...pdfColorStyles
       }}
     >
-      {/* Header Section */}
       <Box
         sx={{
           textAlign: "center",
@@ -321,9 +317,7 @@ export const ModernTemplate = ({
         </Box>
       </Box>
 
-      {/* Main Content Grid */}
       <Grid container spacing={4}>
-        {/* Left Column */}
         <Grid item xs={12} md={8} order={{ xs: 2, md: 1 }}>
           {personalInfo.summary && (
             <Box
@@ -393,7 +387,6 @@ export const ModernTemplate = ({
             </Box>
           )}
 
-          {/* Experience Section */}
           {!isSectionEmpty("experience") && (
             <Box sx={{ mb: 5 }}>
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
@@ -438,7 +431,6 @@ export const ModernTemplate = ({
                 </IconButton>
               </Box>
 
-              {/* Experience Items */}
               {experience.map((exp, index) => (
                 <Box
                   key={exp.id || index}
@@ -608,7 +600,6 @@ export const ModernTemplate = ({
             </Box>
           )}
 
-          {/* Projects Section */}
           {!isSectionEmpty("projects") && (
             <Box sx={{ mb: 5 }}>
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
@@ -796,7 +787,6 @@ export const ModernTemplate = ({
           )}
         </Grid>
 
-        {/* Right Column */}
         <Grid item xs={12} md={4} order={{ xs: 1, md: 2 }}>
           <Box
             sx={{
@@ -819,7 +809,6 @@ export const ModernTemplate = ({
               ...pdfColorStyles
             }}
           >
-            {/* Education Section */}
             {!isSectionEmpty("education") && (
               <Box sx={{ mb: 5 }}>
                 <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
@@ -959,7 +948,6 @@ export const ModernTemplate = ({
               </Box>
             )}
 
-            {/* Skills Section */}
             {!isSectionEmpty("skills") && (
               <Box sx={{ mb: 0 }}>
                 <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
@@ -1003,79 +991,79 @@ export const ModernTemplate = ({
                 </Box>
 
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                    {skills.map((category, index) => (
-                      <Box key={category.id || index}>
-                        <Typography
-                          variant="subtitle1"
-                          sx={{
-                            fontWeight: 700,
-                            color: colorScheme.secondary,
-                            mb: 1.5,
-                            fontSize: "0.95rem",
-                            position: "relative",
-                            pl: 2,
-                            "&::before": {
-                              content: '""',
-                              position: "absolute",
-                              left: 0,
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              width: "6px",
-                              height: "6px",
-                              borderRadius: "50%",
-                              bgcolor: colorScheme.secondary,
-                            },
-                            ...pdfColorStyles
-                          }}
-                        >
-                          {category.name || "Skill Category"}
-                        </Typography>
-  
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: 1,
-                            ml: 2,
-                          }}
-                        >
-                          {Array.isArray(category.skills) &&
-                            category.skills.map(
-                              (skill, idx) =>
-                                skill.trim() && (
-                                  <Chip
-                                    key={idx}
-                                    label={skill.trim()}
-                                    size="small"
-                                    sx={{
-                                      bgcolor: "rgba(255, 255, 255, 0.8)",
-                                      border: `1px solid ${colorScheme.accent}`,
-                                      color: colorScheme.text,
-                                      fontWeight: 500,
-                                      borderRadius: "4px",
-                                      transition:
-                                        "background-color 0.2s, transform 0.2s",
-                                      "&:hover": {
-                                        bgcolor: colorScheme.primary,
-                                        color: "white",
-                                        transform: "translateY(-2px)",
-                                      },
-                                      ...pdfColorStyles
-                                    }}
-                                  />
-                                )
-                            )}
-                        </Box>
+                  {skills.map((category, index) => (
+                    <Box key={category.id || index}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          fontWeight: 700,
+                          color: colorScheme.secondary,
+                          mb: 1.5,
+                          fontSize: "0.95rem",
+                          position: "relative",
+                          pl: 2,
+                          "&::before": {
+                            content: '""',
+                            position: "absolute",
+                            left: 0,
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: "6px",
+                            height: "6px",
+                            borderRadius: "50%",
+                            bgcolor: colorScheme.secondary,
+                          },
+                          ...pdfColorStyles
+                        }}
+                      >
+                        {category.name || "Skill Category"}
+                      </Typography>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 1,
+                          ml: 2,
+                        }}
+                      >
+                        {Array.isArray(category.skills) &&
+                          category.skills.map(
+                            (skill, idx) =>
+                              skill.trim() && (
+                                <Chip
+                                  key={idx}
+                                  label={skill.trim()}
+                                  size="small"
+                                  sx={{
+                                    bgcolor: "rgba(255, 255, 255, 0.8)",
+                                    border: `1px solid ${colorScheme.accent}`,
+                                    color: colorScheme.text,
+                                    fontWeight: 500,
+                                    borderRadius: "4px",
+                                    transition:
+                                      "background-color 0.2s, transform 0.2s",
+                                    "&:hover": {
+                                      bgcolor: colorScheme.primary,
+                                      color: "white",
+                                      transform: "translateY(-2px)",
+                                    },
+                                    ...pdfColorStyles
+                                  }}
+                                />
+                              )
+                          )}
                       </Box>
-                    ))}
-                  </Box>
+                    </Box>
+                  ))}
                 </Box>
-              )}
-            </Box>
-          </Grid>
+              </Box>
+            )}
+          </Box>
         </Grid>
-      </Box>
-    );
-  };
-  
-  export default ModernTemplate;
+      </Grid>
+    </Box>
+  );
+};
+
+export default ModernTemplate;

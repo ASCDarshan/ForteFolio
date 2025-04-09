@@ -3,15 +3,12 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { database } from "../firebaseConfig";
 import { ref, onValue, off, serverTimestamp, update } from "firebase/database";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import theme from "../theme";
+import { ThemeProvider } from "@mui/material/styles";
 import {
     CssBaseline,
     Container,
     Box,
     Paper,
-    AppBar,
-    Toolbar,
     Drawer,
     SwipeableDrawer,
     List,
@@ -23,36 +20,23 @@ import {
     Typography,
     Button,
     IconButton,
-    Zoom,
-    Fab,
     BottomNavigation,
     BottomNavigationAction,
     Stepper,
     Step,
     StepLabel,
-    Chip,
     Collapse,
     Grow,
     LinearProgress,
     CircularProgress,
     Alert,
-    TextField,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
     Tooltip,
-    Snackbar,
     Badge,
     styled,
     alpha,
     useMediaQuery,
-    useScrollTrigger,
-    Slide,
 } from "@mui/material";
 import {
-    Menu as MenuIcon,
     ArrowBack as ArrowBackIcon,
     SaveOutlined as SaveIcon,
     EditOutlined as EditIcon,
@@ -65,11 +49,8 @@ import {
     BuildOutlined as ConstructionIcon,
     VisibilityOutlined as VisibilityIcon,
     CheckCircleOutline as CheckCircleIcon,
-    CloseOutlined as CloseIcon,
     DashboardOutlined as DashboardIcon,
     ArrowForward as ArrowForwardIcon,
-    DarkModeOutlined as DarkModeIcon,
-    LightModeOutlined as LightModeIcon,
 } from "@mui/icons-material";
 
 import PersonalInfoForm from "../components/ResumeBuilderPage/PersonalInfoForm";
@@ -78,320 +59,9 @@ import ExperienceForm from "../components/ResumeBuilderPage/ExperienceForm";
 import SkillsForm from "../components/ResumeBuilderPage/SkillsForm";
 import ProjectsForm from "../components/ResumeBuilderPage/ProjectsForm";
 import ResumePreview from "../components/ResumeBuilderPage/ResumePreview";
-
-const getCustomTheme = (prefersDarkMode) => {
-    return createTheme({
-        palette: {
-            mode: prefersDarkMode ? "dark" : "light",
-            primary: {
-                main: "#4361ee",
-                light: "#738efc",
-                dark: "#2d41a7",
-                contrastText: "#ffffff",
-            },
-            secondary: {
-                main: "#6c63ff",
-                light: "#9d97ff",
-                dark: "#4a44b3",
-                contrastText: "#ffffff",
-            },
-            background: {
-                default: prefersDarkMode ? "#121212" : "#f7f8fc",
-                paper: prefersDarkMode ? "#1e1e1e" : "#ffffff",
-            },
-            success: {
-                main: "#00b894", // A slightly different green
-                light: "#55efc4",
-                dark: "#00838f",
-                contrastText: "#ffffff",
-            },
-            warning: {
-                main: "#fdcb6e", // Kept original warning yellow
-                light: "#ffeaa7",
-                dark: "#e0b057",
-                contrastText: "rgba(0, 0, 0, 0.87)", // Ensure contrast on yellow
-            },
-            error: {
-                main: "#e74c3c", // Kept original error red
-                light: "#ff7675",
-                dark: "#c0392b",
-                contrastText: "#ffffff",
-            },
-            info: {
-                main: "#0984e3", // Kept original info blue
-                light: "#74b9ff",
-                dark: "#0864b1",
-                contrastText: "#ffffff",
-            },
-            divider: prefersDarkMode
-                ? alpha("#ffffff", 0.12)
-                : alpha("#000000", 0.08), // Softer divider
-            text: prefersDarkMode
-                ? {
-                    primary: "#e0e0e0",
-                    secondary: "#b0bec5",
-                    disabled: "#757575",
-                }
-                : {
-                    primary: "#212121",
-                    secondary: "#757575",
-                    disabled: "#bdbdbd",
-                },
-        },
-        typography: {
-            fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-            h1: { fontWeight: 700, fontSize: "2.5rem" },
-            h2: { fontWeight: 700, fontSize: "2rem" },
-            h3: { fontWeight: 600, fontSize: "1.75rem" },
-            h4: { fontWeight: 600, fontSize: "1.5rem" },
-            h5: { fontWeight: 600, fontSize: "1.25rem" },
-            h6: { fontWeight: 600, fontSize: "1.1rem" }, // Slightly larger h6
-            button: {
-                fontWeight: 600,
-                textTransform: "none",
-                letterSpacing: "0.5px", // Add subtle letter spacing
-            },
-        },
-        shape: {
-            borderRadius: 12, // Consistent rounding
-        },
-        shadows: Array(25)
-            .fill("none")
-            .map((_, index) =>
-                index === 0
-                    ? "none"
-                    : `0px ${index * 2}px ${index * 4}px rgba(0,0,0,${Math.min(
-                        0.04 + index * 0.005,
-                        0.1
-                    )})`
-            ), // Custom softer shadows
-        components: {
-            MuiButton: {
-                styleOverrides: {
-                    root: ({ ownerState }) => ({
-                        borderRadius: 8,
-                        padding: "8px 20px", // Slightly more padding
-                        boxShadow:
-                            ownerState.variant === "contained"
-                                ? "0px 4px 12px rgba(0,0,0,0.08)"
-                                : "none",
-                        transition: "all 0.25s ease-in-out",
-                        "&:hover": {
-                            boxShadow:
-                                ownerState.variant === "contained"
-                                    ? "0px 6px 16px rgba(0,0,0,0.12)"
-                                    : "none",
-                            transform: "translateY(-1px)", // Subtle lift on hover
-                        },
-                    }),
-                    containedPrimary: ({ theme }) => ({
-                        "&:hover": {
-                            backgroundColor: theme.palette.primary.dark, // Darken primary on hover
-                        },
-                    }),
-                    containedWarning: ({ theme }) => ({
-                        color: theme.palette.getContrastText(theme.palette.warning.main), // Ensure contrast
-                    }),
-                },
-            },
-            MuiPaper: {
-                defaultProps: {
-                    elevation: 1, // Default elevation for consistency
-                },
-                styleOverrides: {
-                    root: ({ theme, elevation = 1 }) => ({
-                        borderRadius: theme.shape.borderRadius,
-                        backgroundImage: "none", // Remove potential gradients
-                        boxShadow: theme.shadows[elevation] || theme.shadows[1], // Use theme shadows
-                    }),
-                },
-            },
-            MuiFab: {
-                styleOverrides: {
-                    root: ({ theme }) => ({
-                        boxShadow: theme.shadows[6],
-                        "&:hover": {
-                            boxShadow: theme.shadows[10],
-                            transform: "scale(1.03)",
-                        },
-                        transition: "all 0.25s ease-in-out",
-                    }),
-                },
-            },
-            MuiTextField: {
-                defaultProps: {
-                    variant: "outlined", // Ensure outlined is default
-                    size: "small",
-                },
-                styleOverrides: {
-                    root: {
-                        "& .MuiOutlinedInput-root": {
-                            borderRadius: 8, // Match button rounding
-                            transition: "all 0.2s ease-in-out",
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                                borderColor: alpha("#000000", 0.23), // Standard hover border color
-                            },
-                        },
-                    },
-                },
-            },
-            MuiDrawer: {
-                styleOverrides: {
-                    paper: ({ theme }) => ({
-                        borderRight: `1px solid ${theme.palette.divider}`, // Consistent divider
-                        backgroundImage: "none",
-                        boxShadow: "none", // Remove default drawer shadow if needed
-                    }),
-                },
-            },
-            MuiAppBar: {
-                defaultProps: {
-                    elevation: 0, // Flat app bar
-                },
-                styleOverrides: {
-                    root: ({ theme }) => ({
-                        backgroundColor: alpha(theme.palette.background.paper, 0.85),
-                        backdropFilter: "blur(8px)",
-                        borderBottom: `1px solid ${theme.palette.divider}`,
-                    }),
-                },
-            },
-            MuiChip: {
-                styleOverrides: {
-                    root: {
-                        fontWeight: 600,
-                        borderRadius: 8, // Match button rounding
-                    },
-                    filledWarning: ({ theme }) => ({
-                        color: theme.palette.getContrastText(theme.palette.warning.main), // Ensure contrast
-                    }),
-                    outlinedWarning: ({ theme }) => ({
-                        borderColor: alpha(theme.palette.warning.main, 0.7),
-                    }),
-                },
-            },
-            MuiListItemButton: {
-                styleOverrides: {
-                    root: ({ theme }) => ({
-                        borderRadius: 8,
-                        margin: "4px 10px", // Adjust margin
-                        padding: "8px 16px",
-                        transition: "background-color 0.2s ease-out",
-                        "&.Mui-selected": {
-                            backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                            color: theme.palette.primary.main,
-                            fontWeight: 600,
-                            "& .MuiListItemIcon-root": {
-                                color: theme.palette.primary.main,
-                            },
-                            "&:hover": {
-                                backgroundColor: alpha(theme.palette.primary.main, 0.15),
-                            },
-                        },
-                        "&:hover": {
-                            backgroundColor: alpha(theme.palette.action.hover, 0.04),
-                        },
-                    }),
-                },
-            },
-            MuiBottomNavigation: {
-                styleOverrides: {
-                    root: ({ theme }) => ({
-                        borderTop: `1px solid ${theme.palette.divider}`,
-                        backgroundColor: alpha(theme.palette.background.paper, 0.95),
-                        backdropFilter: "blur(5px)",
-                        height: 65,
-                    }),
-                },
-            },
-            MuiBottomNavigationAction: {
-                styleOverrides: {
-                    root: ({ theme }) => ({
-                        color: theme.palette.text.secondary,
-                        transition: "color 0.2s",
-                        "&.Mui-selected": {
-                            color: theme.palette.primary.main,
-                        },
-                    }),
-                    label: {
-                        transition: "font-weight 0.2s",
-                        "&.Mui-selected": {
-                            fontWeight: 600,
-                        },
-                    },
-                },
-            },
-            MuiAlert: {
-                styleOverrides: {
-                    root: ({ theme }) => ({
-                        borderRadius: theme.shape.borderRadius, // Use theme radius
-                        boxShadow: theme.shadows[2],
-                    }),
-                    standardWarning: ({ theme }) => ({
-                        // Style standard variant
-                        backgroundColor: alpha(theme.palette.warning.light, 0.2),
-                        color: theme.palette.warning.dark,
-                    }),
-                    filledWarning: ({ theme }) => ({
-                        // Ensure contrast for filled variant
-                        color: theme.palette.getContrastText(theme.palette.warning.main),
-                    }),
-                },
-            },
-            MuiDialog: {
-                styleOverrides: {
-                    paper: ({ theme }) => ({
-                        borderRadius: theme.shape.borderRadius * 1.5, // Slightly more rounded dialogs
-                        boxShadow: theme.shadows[10],
-                        padding: theme.spacing(1),
-                    }),
-                },
-            },
-            MuiStepper: {
-                // Basic styling for Stepper
-                styleOverrides: {
-                    root: ({ theme }) => ({
-                        padding: theme.spacing(2, 0), // Add some padding
-                    }),
-                },
-            },
-            MuiStepLabel: {
-                styleOverrides: {
-                    label: ({ theme, ownerState }) => ({
-                        fontWeight: ownerState.active ? 600 : 400,
-                        color: ownerState.active
-                            ? theme.palette.primary.main
-                            : theme.palette.text.secondary,
-                        transition: "all 0.3s ease",
-                    }),
-                    iconContainer: {
-                        paddingRight: theme.spacing(1),
-                    },
-                },
-            },
-        },
-    });
-};
-
-const ProgressContainer = styled(Box)(({ theme }) => ({
-    position: "relative",
-    height: 6,
-    width: "100%",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.primary.main, 0.15),
-    overflow: "hidden",
-}));
-
-const ProgressBar = styled(Box)(({ theme, value }) => ({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    height: "100%",
-    width: `${value}%`,
-    borderRadius: theme.shape.borderRadius,
-    background: `linear-gradient(to right, ${theme.palette.primary.light}, ${theme.palette.primary.main})`,
-    transition: "width 0.4s ease-out",
-}));
+import UpdateResumeName from "../components/ResumeBuilderPage/UpdateResumeName";
+import Navbar from "../components/ResumeBuilderPage/Navbar";
+import { getCustomTheme } from "../theme/customTheme";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
@@ -410,51 +80,6 @@ const AnimatedCard = styled(Paper)(({ theme }) => ({
     transition: "all 0.3s ease-in-out",
     position: "relative",
 }));
-
-function ScrollTop(props) {
-    const { children } = props;
-    const trigger = useScrollTrigger({
-        disableHysteresis: true,
-        threshold: 200,
-    });
-
-    const handleClick = () => {
-        const anchor = document.querySelector("#back-to-top-anchor");
-        if (anchor) {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-    };
-
-    return (
-        <Zoom in={trigger}>
-            <Box
-                onClick={handleClick}
-                role="presentation"
-                sx={{
-                    position: "fixed",
-                    bottom: { xs: 80, md: 32 },
-                    right: { xs: 16, md: 32 },
-                    zIndex: (theme) => theme.zIndex.tooltip + 1,
-                }}
-            >
-                {children}
-            </Box>
-        </Zoom>
-    );
-}
-
-function HideOnScroll(props) {
-    const { children } = props;
-    const trigger = useScrollTrigger();
-
-    return (
-        <Slide appear={false} direction="down" in={!trigger}>
-            {children}
-        </Slide>
-    );
-}
 
 const initialResumeState = {
     personalInfo: {
@@ -816,22 +441,6 @@ function ResumeBuilderPage() {
         setShowTitleDialog(true);
     };
     const handleCloseTitleDialog = () => setShowTitleDialog(false);
-
-    const handleSaveTitle = () => {
-        const newTitle = currentTitle.trim();
-        if (!newTitle || newTitle === resumeMetadata.title) {
-            handleCloseTitleDialog();
-            return;
-        }
-        setResumeMetadata((prev) => ({ ...prev, title: newTitle }));
-        setUnsavedChanges(true);
-        handleCloseTitleDialog();
-        setNotification({
-            open: true,
-            message: "Title updated. Save changes to finalize.",
-            severity: "info",
-        });
-    };
 
     const handleCloseNotification = (event, reason) => {
         if (reason === "clickaway") return;
@@ -1262,156 +871,18 @@ function ResumeBuilderPage() {
                         style={{ position: "absolute", top: "-100px" }}
                     ></span>
 
-                    <HideOnScroll>
-                        <AppBar
-                            position="sticky"
-                            sx={{
-                                width: { md: "calc(100% - 280px)" },
-                                ml: { md: "280px" },
-                                bgcolor: darkMode ? "grey.900" : "grey.100",
-                                color: darkMode ? "grey.100" : "grey.900",
-                            }}
-                        >
-                            <Toolbar sx={{ minHeight: { xs: 64, sm: 70 } }}>
-                                <IconButton
-                                    color="inherit"
-                                    aria-label="open drawer"
-                                    edge="start"
-                                    onClick={handleDrawerToggle}
-                                    sx={{ mr: 1.5, display: { md: "none" } }}
-                                >
-                                    {" "}
-                                    <MenuIcon />{" "}
-                                </IconButton>
-
-                                <Box sx={{ flexGrow: 1 }} />
-
-                                {unsavedChanges && !isSaving && (
-                                    <Grow in={unsavedChanges}>
-                                        <Chip
-                                            label="Unsaved Changes"
-                                            color="warning"
-                                            size="small"
-                                            variant="filled"
-                                            sx={{ mx: 1.5, display: { xs: "none", sm: "flex" } }}
-                                        />
-                                    </Grow>
-                                )}
-
-                                {isSaving && (
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            mr: 1.5,
-                                            color: "text.secondary",
-                                        }}
-                                    >
-                                        <CircularProgress
-                                            size={18}
-                                            sx={{ mr: 1 }}
-                                            color="inherit"
-                                        />
-                                        <Typography
-                                            variant="caption"
-                                            sx={{ display: { xs: "none", sm: "inline" } }}
-                                        >
-                                            Saving...
-                                        </Typography>
-                                    </Box>
-                                )}
-
-                                <Box
-                                    sx={{
-                                        width: { xs: 60, sm: 80 },
-                                        mr: 1.5,
-                                        display: { xs: "none", sm: "block" },
-                                    }}
-                                >
-                                    <Tooltip
-                                        title={`${Math.round(completionProgress)}% Complete`}
-                                    >
-                                        <ProgressContainer>
-                                            <ProgressBar value={completionProgress} />
-                                        </ProgressContainer>
-                                    </Tooltip>
-                                </Box>
-
-                                <Tooltip
-                                    title={
-                                        darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"
-                                    }
-                                >
-                                    <IconButton
-                                        onClick={toggleDarkMode}
-                                        color="inherit"
-                                        sx={{ mr: 0.5 }}
-                                    >
-                                        {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
-                                    </IconButton>
-                                </Tooltip>
-
-                                {!isPreviewMode && (
-                                    <Button
-                                        variant="outlined"
-                                        color="secondary"
-                                        onClick={() => handleNavItemClick(previewStepId)}
-                                        startIcon={<VisibilityIcon />}
-                                        sx={{ display: { xs: "none", md: "inline-flex" }, mr: 1 }}
-                                    >
-                                        {" "}
-                                        Preview{" "}
-                                    </Button>
-                                )}
-
-                                <Button
-                                    variant={unsavedChanges ? "contained" : "outlined"}
-                                    color={unsavedChanges ? "warning" : "primary"}
-                                    onClick={handleManualSave}
-                                    startIcon={
-                                        isSaving ? (
-                                            <CircularProgress size={16} color="inherit" />
-                                        ) : (
-                                            <SaveIcon />
-                                        )
-                                    }
-                                    disabled={isSaving || !unsavedChanges}
-                                    sx={{
-                                        display: { xs: "none", md: "inline-flex" },
-                                        minWidth: 100,
-                                        ...(unsavedChanges && {
-                                            animation: "pulse 1.5s infinite ease-in-out",
-                                        }),
-                                        "@keyframes pulse": {
-                                            "0%, 100%": { transform: "scale(1)" },
-                                            "50%": { transform: "scale(1.05)" },
-                                        },
-                                    }}
-                                >
-                                    {isSaving ? "Saving" : unsavedChanges ? "Save" : "Saved"}
-                                </Button>
-
-                                <Box sx={{ display: { xs: "flex", md: "none" }, ml: 1 }}>
-                                    {unsavedChanges && !isSaving && (
-                                        <Tooltip title="Save Changes">
-                                            <IconButton
-                                                color="warning"
-                                                onClick={handleManualSave}
-                                                disabled={isSaving}
-                                            >
-                                                <SaveIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    )}
-                                    {isSaving && (
-                                        <IconButton disabled color="inherit">
-                                            <CircularProgress size={24} color="inherit" />
-                                        </IconButton>
-                                    )}
-                                </Box>
-                            </Toolbar>
-                        </AppBar>
-                    </HideOnScroll>
+                    <Navbar
+                        darkMode={darkMode}
+                        toggleDarkMode={toggleDarkMode}
+                        unsavedChanges={unsavedChanges}
+                        isSaving={isSaving}
+                        completionProgress={completionProgress}
+                        isPreviewMode={isPreviewMode}
+                        handleManualSave={handleManualSave}
+                        handleNavItemClick={handleNavItemClick}
+                        previewStepId={previewStepId}
+                        handleDrawerToggle={handleDrawerToggle}
+                    />
 
                     <Container
                         maxWidth="lg"
@@ -1518,103 +989,22 @@ function ResumeBuilderPage() {
                         </BottomNavigation>
                     </Paper>
                 )}
-                <Dialog
+                <UpdateResumeName
                     open={showTitleDialog}
                     onClose={handleCloseTitleDialog}
-                    maxWidth="xs"
-                    fullWidth
-                >
-                    <DialogTitle sx={{ fontWeight: 600 }}>Rename Resume</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText sx={{ mb: 2 }}>
-                            Enter a new name for this resume.
-                        </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="resumeTitle"
-                            label="Resume Name"
-                            type="text"
-                            fullWidth
-                            value={currentTitle}
-                            onChange={(e) => setCurrentTitle(e.target.value)}
-                            onKeyPress={(e) => e.key === "Enter" && handleSaveTitle()}
-                            InputProps={{
-                                endAdornment: currentTitle ? (
-                                    <IconButton
-                                        size="small"
-                                        onClick={() => setCurrentTitle("")}
-                                        edge="end"
-                                    >
-                                        {" "}
-                                        <CloseIcon fontSize="small" />{" "}
-                                    </IconButton>
-                                ) : null,
-                            }}
-                        />
-                    </DialogContent>
-                    <DialogActions sx={{ px: 3, pb: 2 }}>
-                        <Button onClick={handleCloseTitleDialog} color="inherit">
-                            Cancel
-                        </Button>
-                        <Button
-                            onClick={handleSaveTitle}
-                            variant="contained"
-                            disabled={!currentTitle.trim()}
-                        >
-                            {" "}
-                            Update Name{" "}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-                <Snackbar
-                    open={notification.open}
-                    autoHideDuration={4000}
-                    onClose={handleCloseNotification}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                    sx={{ bottom: { xs: isMobile ? 70 : 24, md: 24 } }}
-                >
-                    <Alert
-                        onClose={handleCloseNotification}
-                        severity={notification.severity}
-                        variant="filled"
-                        elevation={6}
-                        sx={{ width: "100%" }}
-                    >
-                        {" "}
-                        {notification.message}{" "}
-                    </Alert>
-                </Snackbar>
-                <Dialog
-                    open={showLeaveConfirmation}
-                    onClose={() => setShowLeaveConfirmation(false)}
-                    maxWidth="xs"
-                    fullWidth
-                >
-                    <DialogTitle sx={{ fontWeight: 600 }}>Unsaved Changes</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Do you want to save your changes before leaving this page?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions sx={{ px: 3, pb: 2 }}>
-                        <Button
-                            onClick={() => handleConfirmedNavigation(false)}
-                            color="inherit"
-                        >
-                            {" "}
-                            Discard{" "}
-                        </Button>
-                        <Button
-                            onClick={() => handleConfirmedNavigation(true)}
-                            variant="contained"
-                            color="primary"
-                        >
-                            {" "}
-                            Save & Leave{" "}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                    currentTitle={currentTitle}
+                    setCurrentTitle={setCurrentTitle}
+                    resumeTitle={resumeMetadata.title}
+                    setResumeMetadata={setResumeMetadata}
+                    setUnsavedChanges={setUnsavedChanges}
+                    setNotification={setNotification}
+                    notification={notification}
+                    handleCloseNotification={handleCloseNotification}
+                    isMobile={isMobile}
+                    showLeaveConfirmation={showLeaveConfirmation}
+                    setShowLeaveConfirmation={setShowLeaveConfirmation}
+                    handleConfirmedNavigation={handleConfirmedNavigation}
+                />
                 <Box
                     sx={{
                         position: "fixed",

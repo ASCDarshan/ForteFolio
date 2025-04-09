@@ -905,7 +905,7 @@ function DashboardPage() {
                                     }}
                                     sx={{
                                         width: { xs: "100%", sm: "auto" },
-                                        order: { xs: 3, sm: 0 } /* Move search down on mobile */,
+                                        order: { xs: 3, sm: 0 }
                                     }}
                                 />
                                 <Button
