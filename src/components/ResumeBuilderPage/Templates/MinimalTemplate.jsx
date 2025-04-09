@@ -38,7 +38,6 @@ export const MinimalTemplate = ({
     projects = [],
   } = resumeData;
 
-  // Styles for ensuring colors print correctly in PDF
   const pdfColorStyles = {
     WebkitPrintColorAdjust: 'exact',
     printColorAdjust: 'exact',

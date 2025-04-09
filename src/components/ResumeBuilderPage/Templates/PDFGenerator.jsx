@@ -10,7 +10,6 @@ export const PDFGenerator = ({
   onSuccess,
   onError
 }) => {
-  // Add print-specific CSS when component mounts
   useEffect(() => {
     const styleElement = document.createElement('style');
     styleElement.innerHTML = `
@@ -37,7 +36,7 @@ export const PDFGenerator = ({
     `;
     styleElement.id = 'pdf-print-styles';
     document.head.appendChild(styleElement);
-    
+
     return () => {
       const element = document.getElementById('pdf-print-styles');
       if (element) {
@@ -46,9 +45,6 @@ export const PDFGenerator = ({
     };
   }, []);
 
-  /**
-   * Main PDF download function using the direct export approach
-   */
   const downloadPDF = async () => {
     if (!resumeRef.current) {
       onError("Resume reference not found. Please try again.");
@@ -59,31 +55,28 @@ export const PDFGenerator = ({
     console.log("Starting PDF generation process...");
 
     try {
-      // Use our new direct PDF export function
       await generateResumePDF(
-        resumeRef.current, 
+        resumeRef.current,
         `${personalInfo.fullName || "Resume"}.pdf`
       );
-      
+
       setLoading(false);
       onSuccess("Resume downloaded successfully!");
     } catch (error) {
       console.error("PDF generation failed:", error);
-      
+
       try {
-        // Try simplified method as backup
         await generateSimplePDF(
           resumeRef.current,
           `${personalInfo.fullName || "Resume"}.pdf`
         );
-        
+
         setLoading(false);
         onSuccess("A simplified version of your resume was downloaded. For better quality, try using the Print option.");
       } catch (fallbackError) {
         setLoading(false);
         onError("Could not generate PDF. Try using Print instead.");
-        
-        // Suggest print as final fallback
+
         setTimeout(() => {
           if (window.confirm("PDF generation failed. Would you like to try printing instead?")) {
             window.print();
