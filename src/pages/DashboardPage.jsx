@@ -103,7 +103,7 @@ function DashboardPage() {
     const [filteredResumes, setFilteredResumes] = useState([]);
     const [error, setError] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
-    const [sortBy, setSortBy] = useState("lastModified");
+    const [sortBy, setSortBy] = useState("completion");
     const [sortDirection, setSortDirection] = useState("desc");
     const [anchorEl, setAnchorEl] = useState(null);
     const [contextMenu, setContextMenu] = useState({
@@ -127,7 +127,7 @@ function DashboardPage() {
     });
     const [isCreating, setIsCreating] = useState(false);
     const [stats, setStats] = useState({ total: 0, recent: 0, completed: 0 });
-    const [viewMode, setViewMode] = useState("grid");
+    const [viewMode, setViewMode] = useState("list");
 
     useEffect(() => {
         if (!currentUser) {
@@ -307,7 +307,8 @@ function DashboardPage() {
     };
 
     const handleEdit = (resumeId) => navigate(`/resume/${resumeId}`);
-    const handlePreview = (resumeId) => navigate(`/resume/${resumeId}`, { state: { preview: true } });
+    const handlePreview = (resumeId) =>
+        navigate(`/resume/${resumeId}`, { state: { preview: true } });
 
     const handleDelete = async (resumeId) => {
         if (!currentUser || !resumeId) return;
@@ -750,37 +751,39 @@ function DashboardPage() {
             </Box>
 
             <Container maxWidth="lg" sx={{ pb: 8, position: "relative", zIndex: 1 }}>
-                {!isMobile && <Box
-                    component={motion.div}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                    sx={{ mb: 4 }}
-                >
-                    <Grid container spacing={3}>
-                        <StatCard
-                            icon={<DescriptionIcon fontSize="large" />}
-                            title="Total Resumes"
-                            value={stats.total}
-                            delay={0.1}
-                            color={lavenderPalette.deep}
-                        />
-                        <StatCard
-                            icon={<CalendarIcon fontSize="large" />}
-                            title="Updated Recently"
-                            value={stats.recent}
-                            delay={0.2}
-                            color="#7c4dff"
-                        />
-                        <StatCard
-                            icon={<AutoAwesomeIcon fontSize="large" />}
-                            title="Completed"
-                            value={stats.completed}
-                            delay={0.3}
-                            color="#00bfa5"
-                        />
-                    </Grid>
-                </Box>}
+                {!isMobile && (
+                    <Box
+                        component={motion.div}
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        sx={{ mb: 4, mt: 4 }}
+                    >
+                        <Grid container spacing={3}>
+                            <StatCard
+                                icon={<DescriptionIcon fontSize="large" />}
+                                title="Total Resumes"
+                                value={stats.total}
+                                delay={0.1}
+                                color={lavenderPalette.deep}
+                            />
+                            <StatCard
+                                icon={<CalendarIcon fontSize="large" />}
+                                title="Updated Recently"
+                                value={stats.recent}
+                                delay={0.2}
+                                color="#7c4dff"
+                            />
+                            <StatCard
+                                icon={<AutoAwesomeIcon fontSize="large" />}
+                                title="Completed"
+                                value={stats.completed}
+                                delay={0.3}
+                                color="#00bfa5"
+                            />
+                        </Grid>
+                    </Box>
+                )}
 
                 <Box
                     component={motion.div}
@@ -905,7 +908,7 @@ function DashboardPage() {
                                     }}
                                     sx={{
                                         width: { xs: "100%", sm: "auto" },
-                                        order: { xs: 3, sm: 0 }
+                                        order: { xs: 3, sm: 0 },
                                     }}
                                 />
                                 <Button
@@ -953,16 +956,6 @@ function DashboardPage() {
                                 >
                                     <Tooltip title="Grid View">
                                         <Button
-                                            onClick={() => setViewMode("grid")}
-                                            className={viewMode === "grid" ? "Mui-selected" : ""}
-                                            sx={{ borderTopLeftRadius: 6, borderBottomLeftRadius: 6 }}
-                                        >
-                                            {" "}
-                                            <GridViewIcon />{" "}
-                                        </Button>
-                                    </Tooltip>
-                                    <Tooltip title="List View">
-                                        <Button
                                             onClick={() => setViewMode("list")}
                                             className={viewMode === "list" ? "Mui-selected" : ""}
                                             sx={{
@@ -972,6 +965,16 @@ function DashboardPage() {
                                         >
                                             {" "}
                                             <ListViewIcon />{" "}
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip title="List View">
+                                        <Button
+                                            onClick={() => setViewMode("grid")}
+                                            className={viewMode === "grid" ? "Mui-selected" : ""}
+                                            sx={{ borderTopLeftRadius: 6, borderBottomLeftRadius: 6 }}
+                                        >
+                                            {" "}
+                                            <GridViewIcon />{" "}
                                         </Button>
                                     </Tooltip>
                                 </ButtonGroup>

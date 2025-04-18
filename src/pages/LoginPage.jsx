@@ -192,17 +192,24 @@ function LoginPage() {
           </Typography>
         </Box>
 
-        <Grid
-          container
-          spacing={{ xs: 4, md: 5 }}
-          sx={{ flexGrow: 1, alignItems: "center", mb: { xs: 4, md: 6 } }}
-        >
-          <Grid item xs={12} md={6} sx={{ order: { xs: 2, md: 1 } }}>
+
+        <Grid item xs={12} md={6} sx={{ order: { xs: 2, md: 1 } }}>
+          <Box
+            display="flex"
+            flexDirection={{ xs: "column", md: "row" }}
+            alignItems="center"
+            justifyContent="space-between"
+            gap={6}
+            mt={8}
+            width="100%"
+          >
+            {/* Left Section: Text */}
             <Box
-              component={motion.div}
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              flex={1}
+              sx={{
+                textAlign: { xs: "center", md: "left" },
+                mb: { xs: 4, md: 0 },
+              }}
             >
               <Box
                 sx={{ mb: 1, display: "flex", alignItems: "center", gap: 1 }}
@@ -226,7 +233,6 @@ function LoginPage() {
                   RESUME BUILDER
                 </Typography>
               </Box>
-
               <Typography
                 variant={isSmall ? "h4" : "h3"}
                 component="h2"
@@ -241,14 +247,8 @@ function LoginPage() {
                   Elevate
                   <Box
                     component={motion.div}
-                    animate={{
-                      width: ["0%", "100%", "100%", "0%"],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      repeatDelay: 3,
-                    }}
+                    animate={{ width: ["0%", "100%", "100%", "0%"] }}
+                    transition={{ duration: 4, repeat: Infinity, repeatDelay: 3 }}
                     sx={{
                       position: "absolute",
                       bottom: "0",
@@ -262,400 +262,411 @@ function LoginPage() {
                 </Box>{" "}
                 your career with stunning resumes
               </Typography>
-
-              <Typography
-                variant="h6"
-                component="h3"
-                sx={{
-                  mb: 4,
-                  maxWidth: { xs: "100%", md: "90%" },
-                  fontWeight: 400,
-                  color: lavenderPalette.text,
-                }}
-              >
-                Create professional resumes that help you stand out and land
-                your dream job.
-              </Typography>
-
-              <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: 4 }}>
-                {features.map((feature, index) => (
-                  <Grid item xs={12} sm={6} key={feature.title}>
-                    <FeatureCard
-                      icon={feature.icon}
-                      title={feature.title}
-                      description={feature.description}
-                      delay={0.4 + index * 0.15}
-                      index={index}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-
-              <StatisticsBar />
-              <TestimonialBadge />
             </Box>
-          </Grid>
 
-          <Grid item xs={12} md={6} sx={{ order: { xs: 1, md: 2 } }}>
+            {/* Right Section: Login Card */}
             <Box
-              component={motion.div}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
+              flexShrink={0}
               sx={{
+                width: { xs: "100%", sm: "100%", md: "auto" },
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                mb: { xs: 4, md: 0 },
+                justifyContent: { xs: "center", md: "flex-end" },
+                mb: 4,
               }}
             >
-              <Box
-                component={motion.div}
-                whileHover={{
-                  boxShadow: `0 30px 100px ${lavenderPalette.primary}30`,
-                  transition: { duration: 0.3 },
-                }}
-                sx={{
-                  width: "100%",
-                  maxWidth: "430px",
-                  position: "relative",
-                }}
-              >
+              <Grid item xs={12} md={6} sx={{ order: { xs: 1, md: 2 } }}>
                 <Box
                   component={motion.div}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.9, duration: 0.5 }}
-                  sx={{
-                    position: "absolute",
-                    top: -20,
-                    right: -15,
-                    width: 40,
-                    height: 40,
-                    borderRadius: "12px",
-                    background: lavenderPalette.medium,
-                    transform: "rotate(15deg)",
-                    zIndex: 0,
+                  whileHover={{
+                    boxShadow: `0 30px 100px ${lavenderPalette.primary}30`,
+                    transition: { duration: 0.3 },
                   }}
-                />
-                <Box
-                  component={motion.div}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1, duration: 0.5 }}
                   sx={{
-                    position: "absolute",
-                    bottom: -15,
-                    left: -15,
-                    width: 30,
-                    height: 30,
-                    borderRadius: "50%",
-                    background: lavenderPalette.deep,
-                    zIndex: 0,
-                  }}
-                />
-
-                <Paper
-                  elevation={16}
-                  sx={{
-                    p: { xs: 3, sm: 4 },
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
                     width: "100%",
-                    borderRadius: 4,
-                    backdropFilter: "blur(20px)",
-                    background: "rgba(255, 255, 255, 0.9)",
-                    boxShadow: `0 20px 80px ${lavenderPalette.primary}25`,
+                    maxWidth: "430px",
                     position: "relative",
-                    overflow: "hidden",
-                    border: `1px solid ${lavenderPalette.soft}70`,
-                    zIndex: 1,
                   }}
                 >
                   <Box
                     component={motion.div}
-                    whileHover={{
-                      y: -5,
-                      boxShadow: `0 20px 30px ${lavenderPalette.primary}30`,
-                      transition: { duration: 0.3 },
-                    }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.9, duration: 0.5 }}
                     sx={{
-                      backgroundColor: lavenderPalette.medium,
+                      position: "absolute",
+                      top: -20,
+                      right: -15,
+                      width: 40,
+                      height: 40,
+                      borderRadius: "12px",
+                      background: lavenderPalette.medium,
+                      transform: "rotate(15deg)",
+                      zIndex: 0,
+                    }}
+                  />
+                  <Box
+                    component={motion.div}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1, duration: 0.5 }}
+                    sx={{
+                      position: "absolute",
+                      bottom: -15,
+                      left: -15,
+                      width: 30,
+                      height: 30,
                       borderRadius: "50%",
-                      padding: 1.5,
-                      mb: 3,
+                      background: lavenderPalette.deep,
+                      zIndex: 0,
+                    }}
+                  />
+
+                  <Paper
+                    elevation={16}
+                    sx={{
+                      p: { xs: 3, sm: 4 },
                       display: "flex",
+                      flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      width: "100%",
+                      borderRadius: 4,
+                      backdropFilter: "blur(20px)",
+                      background: "rgba(255, 255, 255, 0.9)",
+                      boxShadow: `0 20px 80px ${lavenderPalette.primary}25`,
                       position: "relative",
-                      width: 112,
-                      height: 112,
+                      overflow: "hidden",
+                      border: `1px solid ${lavenderPalette.soft}70`,
+                      zIndex: 1,
                     }}
                   >
-                    <Avatar
+                    <Box
+                      component={motion.div}
+                      whileHover={{
+                        y: -5,
+                        boxShadow: `0 20px 30px ${lavenderPalette.primary}30`,
+                        transition: { duration: 0.3 },
+                      }}
                       sx={{
-                        width: 80,
-                        height: 80,
-                        backgroundColor: "white",
+                        backgroundColor: lavenderPalette.medium,
+                        borderRadius: "50%",
+                        padding: 1.5,
+                        mb: 3,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         position: "relative",
-                        overflow: "visible",
+                        width: 112,
+                        height: 112,
                       }}
                     >
+                      <Avatar
+                        sx={{
+                          width: 80,
+                          height: 80,
+                          backgroundColor: "white",
+                          position: "relative",
+                          overflow: "visible",
+                        }}
+                      >
+                        <Box
+                          component={motion.div}
+                          animate={{
+                            rotate: [0, 360],
+                          }}
+                          transition={{
+                            duration: 20,
+                            repeat: Infinity,
+                            ease: "linear",
+                          }}
+                          sx={{
+                            position: "absolute",
+                            top: "-6px",
+                            left: "-6px",
+                            width: "calc(100% + 12px)",
+                            height: "calc(100% + 12px)",
+                            borderRadius: "50%",
+                            border: `4px dashed ${lavenderPalette.soft}70`,
+                          }}
+                        />
+                        <ForteFolioLogo width={50} height={50} />
+                      </Avatar>
+                    </Box>
+
+                    <Typography
+                      variant="h4"
+                      component="h2"
+                      sx={{
+                        fontWeight: "bold",
+                        color: lavenderPalette.darkText,
+                        textAlign: "center",
+                        mb: 1,
+                        position: "relative",
+                      }}
+                    >
+                      Welcome to ForteFolio
                       <Box
                         component={motion.div}
                         animate={{
-                          rotate: [0, 360],
+                          width: ["0%", "100%", "0%"],
                         }}
                         transition={{
-                          duration: 20,
+                          duration: 3,
                           repeat: Infinity,
-                          ease: "linear",
+                          repeatDelay: 1,
                         }}
                         sx={{
                           position: "absolute",
-                          top: "-6px",
-                          left: "-6px",
-                          width: "calc(100% + 12px)",
-                          height: "calc(100% + 12px)",
-                          borderRadius: "50%",
-                          border: `4px dashed ${lavenderPalette.soft}70`,
+                          bottom: "-4px",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          height: "4px",
+                          background: lavenderPalette.gradient,
+                          borderRadius: "2px",
                         }}
                       />
-                      <ForteFolioLogo width={50} height={50} />
-                    </Avatar>
-                  </Box>
+                    </Typography>
 
-                  <Typography
-                    variant="h4"
-                    component="h2"
-                    sx={{
-                      fontWeight: "bold",
-                      color: lavenderPalette.darkText,
-                      textAlign: "center",
-                      mb: 1,
-                      position: "relative",
-                    }}
-                  >
-                    Welcome to ForteFolio
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        mb: 5,
+                        textAlign: "center",
+                        maxWidth: "320px",
+                        color: lavenderPalette.text,
+                      }}
+                    >
+                      Begin your journey to creating impressive, job-winning
+                      resumes
+                    </Typography>
+
+                    {error && (
+                      <Alert
+                        severity="error"
+                        sx={{
+                          mb: 3,
+                          width: "100%",
+                          borderRadius: 2,
+                          border: "1px solid",
+                          borderColor: "error.light",
+                        }}
+                      >
+                        {error}
+                      </Alert>
+                    )}
+
                     <Box
                       component={motion.div}
-                      animate={{
-                        width: ["0%", "100%", "0%"],
+                      whileHover={{
+                        scale: 1.03,
+                        transition: { duration: 0.2 },
                       }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        repeatDelay: 1,
-                      }}
-                      sx={{
-                        position: "absolute",
-                        bottom: "-4px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        height: "4px",
-                        background: lavenderPalette.gradient,
-                        borderRadius: "2px",
-                      }}
-                    />
-                  </Typography>
-
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      mb: 5,
-                      textAlign: "center",
-                      maxWidth: "320px",
-                      color: lavenderPalette.text,
-                    }}
-                  >
-                    Begin your journey to creating impressive, job-winning
-                    resumes
-                  </Typography>
-
-                  {error && (
-                    <Alert
-                      severity="error"
-                      sx={{
-                        mb: 3,
-                        width: "100%",
-                        borderRadius: 2,
-                        border: "1px solid",
-                        borderColor: "error.light",
-                      }}
+                      whileTap={{ scale: 0.97 }}
+                      sx={{ width: "100%" }}
+                      onHoverStart={() => setHoverButton(true)}
+                      onHoverEnd={() => setHoverButton(false)}
                     >
-                      {error}
-                    </Alert>
-                  )}
-
-                  <Box
-                    component={motion.div}
-                    whileHover={{
-                      scale: 1.03,
-                      transition: { duration: 0.2 },
-                    }}
-                    whileTap={{ scale: 0.97 }}
-                    sx={{ width: "100%" }}
-                    onHoverStart={() => setHoverButton(true)}
-                    onHoverEnd={() => setHoverButton(false)}
-                  >
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      size="large"
-                      startIcon={
-                        isLoading ? (
-                          <CircularProgress size={24} color="inherit" />
-                        ) : (
-                          <Box
-                            component={motion.div}
-                            animate={
-                              hoverButton
-                                ? {
-                                  rotate: [0, -10, 10, -5, 0],
-                                }
-                                : {}
-                            }
-                            transition={{ duration: 0.5 }}
-                          >
-                            <GoogleIcon />
-                          </Box>
-                        )
-                      }
-                      onClick={onGoogleSignIn}
-                      disabled={isLoading}
-                      sx={{
-                        py: 1.8,
-                        borderRadius: "16px",
-                        textTransform: "none",
-                        fontSize: { xs: "1rem", sm: "1.1rem" },
-                        fontWeight: 600,
-                        letterSpacing: 0.5,
-                        boxShadow: `0 10px 20px ${lavenderPalette.medium}30`,
-                        background: lavenderPalette.gradient,
-                        color: "white",
-                        position: "relative",
-                        overflow: "hidden",
-                        "&::before": {
-                          content: '""',
-                          position: "absolute",
-                          top: 0,
-                          left: "-100%",
-                          width: "100%",
-                          height: "100%",
-                          background: `linear-gradient(90deg, transparent, ${alpha(
-                            lavenderPalette.light,
-                            0.4
-                          )}, transparent)`,
-                          transition: "all 0.6s ease",
-                        },
-                        "&:hover": {
-                          boxShadow: `0 15px 25px ${lavenderPalette.medium}40`,
-                          "&::before": {
-                            left: "100%",
-                          },
-                        },
-                      }}
-                    >
-                      {isLoading ? "Signing In..." : "Continue with Google"}
-
-                      <AnimatePresence>
-                        {hoverButton &&
-                          !isLoading &&
-                          [...Array(5)].map((_, i) => (
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        size="large"
+                        startIcon={
+                          isLoading ? (
+                            <CircularProgress size={24} color="inherit" />
+                          ) : (
                             <Box
-                              key={`particle-${i}`}
                               component={motion.div}
-                              initial={{
-                                opacity: 1,
-                                scale: 0,
-                                x: "50%",
-                                y: "50%",
-                              }}
-                              animate={{
-                                opacity: 0,
-                                scale: Math.random() * 0.5 + 0.5,
-                                x: `${(Math.random() - 0.5) * 200}%`,
-                                y: `${(Math.random() - 0.5) * 200}%`,
-                              }}
-                              exit={{ opacity: 0 }}
-                              transition={{
-                                duration: Math.random() * 0.5 + 0.4,
-                              }}
-                              sx={{
-                                position: "absolute",
-                                top: "50%",
-                                left: "50%",
-                                width: 8,
-                                height: 8,
-                                borderRadius: "50%",
-                                backgroundColor: "white",
-                                pointerEvents: "none",
-                              }}
-                            />
-                          ))}
-                      </AnimatePresence>
-                    </Button>
-                  </Box>
+                              animate={
+                                hoverButton
+                                  ? {
+                                    rotate: [0, -10, 10, -5, 0],
+                                  }
+                                  : {}
+                              }
+                              transition={{ duration: 0.5 }}
+                            >
+                              <GoogleIcon />
+                            </Box>
+                          )
+                        }
+                        onClick={onGoogleSignIn}
+                        disabled={isLoading}
+                        sx={{
+                          py: 1.8,
+                          borderRadius: "16px",
+                          textTransform: "none",
+                          fontSize: { xs: "1rem", sm: "1.1rem" },
+                          fontWeight: 600,
+                          letterSpacing: 0.5,
+                          boxShadow: `0 10px 20px ${lavenderPalette.medium}30`,
+                          background: lavenderPalette.gradient,
+                          color: "white",
+                          position: "relative",
+                          overflow: "hidden",
+                          "&::before": {
+                            content: '""',
+                            position: "absolute",
+                            top: 0,
+                            left: "-100%",
+                            width: "100%",
+                            height: "100%",
+                            background: `linear-gradient(90deg, transparent, ${alpha(
+                              lavenderPalette.light,
+                              0.4
+                            )}, transparent)`,
+                            transition: "all 0.6s ease",
+                          },
+                          "&:hover": {
+                            boxShadow: `0 15px 25px ${lavenderPalette.medium}40`,
+                            "&::before": {
+                              left: "100%",
+                            },
+                          },
+                        }}
+                      >
+                        {isLoading ? "Signing In..." : "Continue with Google"}
 
-                  <Box
-                    component={motion.div}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2, duration: 0.5 }}
-                    sx={{
-                      mt: 3,
-                      textAlign: "center",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 0.5,
-                    }}
-                  >
-                    <AccessTimeIcon
-                      sx={{ color: lavenderPalette.primary, fontSize: 16 }}
-                    />
-                    <Typography
-                      variant="body2"
+                        <AnimatePresence>
+                          {hoverButton &&
+                            !isLoading &&
+                            [...Array(5)].map((_, i) => (
+                              <Box
+                                key={`particle-${i}`}
+                                component={motion.div}
+                                initial={{
+                                  opacity: 1,
+                                  scale: 0,
+                                  x: "50%",
+                                  y: "50%",
+                                }}
+                                animate={{
+                                  opacity: 0,
+                                  scale: Math.random() * 0.5 + 0.5,
+                                  x: `${(Math.random() - 0.5) * 200}%`,
+                                  y: `${(Math.random() - 0.5) * 200}%`,
+                                }}
+                                exit={{ opacity: 0 }}
+                                transition={{
+                                  duration: Math.random() * 0.5 + 0.4,
+                                }}
+                                sx={{
+                                  position: "absolute",
+                                  top: "50%",
+                                  left: "50%",
+                                  width: 8,
+                                  height: 8,
+                                  borderRadius: "50%",
+                                  backgroundColor: "white",
+                                  pointerEvents: "none",
+                                }}
+                              />
+                            ))}
+                        </AnimatePresence>
+                      </Button>
+                    </Box>
+
+                    <Box
+                      component={motion.div}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.2, duration: 0.5 }}
                       sx={{
-                        color: lavenderPalette.text,
-                        fontStyle: "italic",
+                        mt: 3,
+                        textAlign: "center",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 0.5,
                       }}
                     >
-                      Setup takes less than 1 minute
-                    </Typography>
-                  </Box>
-                </Paper>
-              </Box>
+                      <AccessTimeIcon
+                        sx={{ color: lavenderPalette.primary, fontSize: 16 }}
+                      />
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: lavenderPalette.text,
+                          fontStyle: "italic",
+                        }}
+                      >
+                        Setup takes less than 1 minute
+                      </Typography>
+                    </Box>
+                  </Paper>
+                </Box>
+              </Grid>
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
 
-        <Box
-          component={motion.div}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5 }}
-          sx={{
-            py: { xs: 2, md: 3 },
-            textAlign: "center",
-            width: "100%",
-            mt: "auto",
-          }}
-        >
           <Typography
-            variant="caption"
+            variant="h6"
+            component="h3"
             sx={{
+              mb: 4,
+              maxWidth: { xs: "100%", md: "90%" },
+              fontWeight: 400,
               color: lavenderPalette.text,
-              opacity: 0.8,
             }}
           >
-            © {new Date().getFullYear()} ForteFolio | Privacy Policy | Terms of
-            Service
+            Create professional resumes that help you stand out and land
+            your dream job.
           </Typography>
-        </Box>
+
+          <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: 4 }}>
+            {features.map((feature, index) => (
+              <Grid item xs={12} sm={6} key={feature.title}>
+                <FeatureCard
+                  icon={feature.icon}
+                  title={feature.title}
+                  description={feature.description}
+                  delay={0.4 + index * 0.15}
+                  index={index}
+                />
+              </Grid>
+            ))}
+          </Grid>
+
+          <StatisticsBar />
+          <TestimonialBadge />
+        </Grid>
+
       </Container>
+      <Box
+        component={motion.div}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 0.5 }}
+        sx={{
+          mt: { xs: 6, md: 8 }, // Increased top margin for better separation
+          pt: { xs: 3, md: 4 }, // Added top padding
+          pb: { xs: 3, md: 4 }, // Added bottom padding
+          borderTop: `1px solid ${lavenderPalette.soft}40`, // Light border for visual separation
+          textAlign: "center",
+          width: "100%",
+          marginTop: "auto", // Pushes the footer to the bottom of container
+        }}
+      >
+        <Typography
+          variant="caption"
+          sx={{
+            color: lavenderPalette.text,
+            opacity: 0.8,
+            display: "block", // Makes it a block element for better spacing
+            mb: 1, // Small margin bottom for spacing between elements
+          }}
+        >
+          © {new Date().getFullYear()} ForteFolio | Privacy Policy | Terms of Service
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{
+            color: lavenderPalette.text,
+            opacity: 0.6,
+            fontSize: "0.7rem",
+          }}
+        >
+          All rights reserved
+        </Typography>
+      </Box>
     </Box>
   );
 }
