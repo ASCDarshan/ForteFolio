@@ -1,6 +1,6 @@
 // Templates/PDFGenerator.js
 import React, { useEffect } from 'react';
-import { generateResumePDF, generateSimplePDF } from '../utils/DirectPDFExport';
+import html2pdf from 'html2pdf.js';
 
 export const PDFGenerator = ({
   resumeRef,
@@ -17,20 +17,30 @@ export const PDFGenerator = ({
         * {
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
-          color-adjust: exact !important;
         }
-        
-        body {
-          -webkit-font-smoothing: antialiased;
+
+        html, body {
           font-smoothing: antialiased;
+          -webkit-font-smoothing: antialiased;
+          overflow: visible !important;
         }
-        
+
         .resume-container {
           width: 100% !important;
           max-width: 210mm !important;
           height: auto !important;
-          overflow: visible !important;
           page-break-inside: avoid !important;
+          break-inside: avoid !important;
+        }
+
+        .resume-section {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+        }
+
+        .page-break {
+          page-break-before: always !important;
+          break-before: page !important;
         }
       }
     `;
@@ -52,37 +62,38 @@ export const PDFGenerator = ({
     }
 
     setLoading(true);
-    console.log("Starting PDF generation process...");
+    console.log("Starting PDF generation...");
+
+    const element = resumeRef.current;
+    const filename = `${personalInfo.fullName || "Resume"}.pdf`;
 
     try {
-      await generateResumePDF(
-        resumeRef.current,
-        `${personalInfo.fullName || "Resume"}.pdf`
-      );
+      await html2pdf().set({
+        margin: [0.5, 0.5],
+        filename: filename,
+        html2canvas: {
+          scale: 2,
+          useCORS: true
+        },
+        jsPDF: {
+          unit: 'in',
+          format: 'letter',
+          orientation: 'portrait'
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      }).from(element).save();
 
       setLoading(false);
       onSuccess("Resume downloaded successfully!");
     } catch (error) {
       console.error("PDF generation failed:", error);
-
-      try {
-        await generateSimplePDF(
-          resumeRef.current,
-          `${personalInfo.fullName || "Resume"}.pdf`
-        );
-
-        setLoading(false);
-        onSuccess("A simplified version of your resume was downloaded. For better quality, try using the Print option.");
-      } catch (fallbackError) {
-        setLoading(false);
-        onError("Could not generate PDF. Try using Print instead.");
-
-        setTimeout(() => {
-          if (window.confirm("PDF generation failed. Would you like to try printing instead?")) {
-            window.print();
-          }
-        }, 500);
-      }
+      setLoading(false);
+      onError("Could not generate PDF. Try using Print instead.");
+      setTimeout(() => {
+        if (window.confirm("PDF generation failed. Would you like to try printing instead?")) {
+          window.print();
+        }
+      }, 500);
     }
   };
 

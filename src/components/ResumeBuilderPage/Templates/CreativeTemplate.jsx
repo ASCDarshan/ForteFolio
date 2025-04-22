@@ -57,7 +57,7 @@ export const CreativeTemplate = ({
         fontFamily: fontFamily,
         color: colorScheme.text,
         bgcolor: colorScheme.background,
-        p: 4,
+        p: 2,
         maxWidth: "1000px",
         mx: "auto",
         position: "relative",
@@ -81,7 +81,7 @@ export const CreativeTemplate = ({
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           alignItems: { xs: "center", md: "flex-end" },
-          mb: 6,
+          mb: 3,
           gap: 3,
           ...pdfColorStyles
         }}
@@ -226,7 +226,7 @@ export const CreativeTemplate = ({
           elevation={3}
           sx={{
             p: 3,
-            mb: 4,
+            mb: 2,
             borderRadius: 4,
             position: "relative",
             "&:before": {
@@ -277,7 +277,7 @@ export const CreativeTemplate = ({
       <Grid container spacing={4}>
         <Grid item xs={12} md={7}>
           {!isSectionEmpty("experience") && (
-            <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 3, ...pdfColorStyles }}>
+            <Paper elevation={2} sx={{ p: 3, mb: 2, borderRadius: 3, ...pdfColorStyles }}>
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
                 <Avatar sx={{ bgcolor: colorScheme.primary, mr: 2, ...pdfColorStyles }}>
                   <WorkIcon />
@@ -329,7 +329,7 @@ export const CreativeTemplate = ({
                   <Box
                     key={exp.id || index}
                     sx={{
-                      mb: 4,
+                      mb: 2,
                       position: "relative",
                       "&:before": {
                         content: '""',
@@ -414,7 +414,7 @@ export const CreativeTemplate = ({
           )}
 
           {!isSectionEmpty("projects") && (
-            <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 3, ...pdfColorStyles }}>
+            <Paper elevation={2} sx={{ p: 3, mb: 2, borderRadius: 3, ...pdfColorStyles }}>
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
                 <Avatar sx={{ bgcolor: colorScheme.primary, mr: 2, ...pdfColorStyles }}>
                   <CodeIcon />
@@ -550,8 +550,8 @@ export const CreativeTemplate = ({
 
         <Grid item xs={12} md={5}>
           {!isSectionEmpty("education") && (
-            <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 3, ...pdfColorStyles }}>
-              <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+            <Paper elevation={2} sx={{ p: 3, mb: 2, borderRadius: 3, ...pdfColorStyles }}>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                 <Avatar sx={{ bgcolor: colorScheme.primary, mr: 2, ...pdfColorStyles }}>
                   <SchoolIcon />
                 </Avatar>
@@ -643,7 +643,7 @@ export const CreativeTemplate = ({
 
           {!isSectionEmpty("skills") && (
             <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 3, ...pdfColorStyles }}>
-              <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                 <Avatar sx={{ bgcolor: colorScheme.primary, mr: 2, ...pdfColorStyles }}>
                   <PsychologyIcon />
                 </Avatar>
