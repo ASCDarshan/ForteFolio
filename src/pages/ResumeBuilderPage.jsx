@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -210,7 +211,7 @@ function ResumeBuilderPage() {
             completed[sec.key] = isSectionComplete(sec.key, resumeData[sec.key]);
         });
         return completed;
-    }, [resumeData]);
+    }, [resumeData, currentStep]);
 
     const completionProgress = useMemo(() => {
         return (
@@ -347,7 +348,7 @@ function ResumeBuilderPage() {
         if (unsavedChanges) {
             const debounce = setTimeout(() => {
                 saveResumeData(false);
-            }, 1000);
+            }, 5000);
 
             return () => clearTimeout(debounce);
         }
