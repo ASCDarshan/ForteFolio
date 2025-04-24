@@ -790,7 +790,12 @@ function DashboardPage() {
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    sx={{ mb: 3 }}
+                    sx={{
+                        mb: 3,
+                        position: { xs: "sticky", sm: "static" },
+                        top: { xs: 0 },
+                        zIndex: { xs: 1100 },
+                    }}
                 >
                     <Paper
                         elevation={0}
